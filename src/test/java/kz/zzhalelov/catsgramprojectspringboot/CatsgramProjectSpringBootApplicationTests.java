@@ -1,0 +1,13 @@
+package kz.zzhalelov.catsgramprojectspringboot;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CatsgramProjectSpringBootApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
