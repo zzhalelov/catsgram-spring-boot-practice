@@ -1,41 +1,34 @@
 package kz.zzhalelov.catsgramprojectspringboot.controller;
 
-import kz.zzhalelov.catsgramprojectspringboot.exception.InvalidEmailException;
-import kz.zzhalelov.catsgramprojectspringboot.exception.UserAlreadyExistException;
 import kz.zzhalelov.catsgramprojectspringboot.model.User;
+import kz.zzhalelov.catsgramprojectspringboot.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-    private final Map<String, User> users = new HashMap<>();
-
+    private final UserService userService;
 
     @GetMapping("/users")
     public Collection<User> findAll() {
-        return users.values();
+        return userService.findAll();
     }
 
     @PostMapping("/users")
     public User create(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Email is empty");
-        }
-        if (users.containsKey(user.getEmail())) {
-            throw new UserAlreadyExistException("User is already exists");
-        }
-        users.put(user.getEmail(), user);
-        return user;
+        return userService.create(user);
     }
 
     @PutMapping("/users")
     public User update(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Email is empty");
-        }
+        return userService.update(user);
+    }
 
-        users.put(user.getEmail(), user);
-        return user;
+    @GetMapping("/users/{email}")
+    public User findByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
     }
 }

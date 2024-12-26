@@ -1,31 +1,31 @@
 package kz.zzhalelov.catsgramprojectspringboot.controller;
 
 import kz.zzhalelov.catsgramprojectspringboot.model.Post;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import kz.zzhalelov.catsgramprojectspringboot.service.PostService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Slf4j
+@RequiredArgsConstructor
 public class PostController {
-    private static final Logger log = LoggerFactory.getLogger(PostController.class);
-
-    private List<Post> posts = new ArrayList<>();
+    private final PostService postService;
 
     @GetMapping("/posts")
     public List<Post> findAll() {
-        log.debug("Текущее кол-во постов: " + posts.size());
-        return posts;
+        return postService.findAll();
     }
 
     @PostMapping("/posts")
     public Post create(@RequestBody Post post) {
-        posts.add(post);
-        return post;
+        return postService.create(post);
+    }
+
+    @GetMapping("/posts/{id}")
+    public Post findById(@PathVariable int id) {
+        return postService.findById(id);
     }
 }
